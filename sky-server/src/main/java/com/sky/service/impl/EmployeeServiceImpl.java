@@ -55,7 +55,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         System.out.println(password);
         if (!password.equals(employee.getPassword())) {
             //密码错误
-            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR+password);
+            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR + password);
         }
 
         if (employee.getStatus() == StatusConstant.DISABLE) {
@@ -69,14 +69,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 新增员工
+     *
      * @param employeeDTO
      */
     public void save(EmployeeDTO employeeDTO) {
-        System.out.println("当前线程的ID："+Thread.currentThread().getId());
+        System.out.println("当前线程的ID：" + Thread.currentThread().getId());
 
-        Employee employee=new Employee();
+        Employee employee = new Employee();
         //对象属性拷贝
-        BeanUtils.copyProperties(employeeDTO,employee);
+        BeanUtils.copyProperties(employeeDTO, employee);
 
         //设置账号状态,默认正常状态,1正常，0锁定
         employee.setStatus(StatusConstant.ENABLE);
@@ -97,22 +98,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 员工分页查询
+     *
      * @param employeePageQueryDTO
      * @return
      */
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
         //开始分页查询
-        PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
-        Page<Employee> page=employeeMapper.pageQuery(employeePageQueryDTO);
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
+        Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
 
         long total = page.getTotal();
-        List<Employee>records=page.getResult();
+        List<Employee> records = page.getResult();
         //使用有参构造方法
-        return new PageResult(total,records);
+        return new PageResult(total, records);
     }
 
     /**
      * 启用禁用员工
+     *
      * @param status
      * @param id
      */
@@ -123,5 +126,31 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .build();
         employeeMapper.update(employee);
     }
+
+    /**
+     * 根据id查询员工
+     *
+     * @param id
+     * @return
+     */
+    public Employee getById(Long id) {
+        Employee employee = employeeMapper.getById(id);
+        employee.setPassword("*****");
+        return employee;
+    }
+
+    /**
+     * 编辑员工信息
+     * @param employeeDTO
+     */
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee=new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.update(employee);
+
+    }
+
 
 }

@@ -23,7 +23,7 @@ public interface EmployeeMapper {
      * @param employee
      */
     @Insert({
-            "INSERT INTO employee (name, username, password, phone, sex, id_number, create_time, update_time, create_user, update_user)",
+            "INSERT INTO employee (name, username, password, phone, sex, id_number, create_time, update_time, create_user, update_user)"+
             "VALUES " +
             "(#{name}, #{username}, #{password}, #{phone}, #{sex}, #{idNumber}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})"
     })

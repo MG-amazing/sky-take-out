@@ -73,7 +73,6 @@ public class DishController {
 
     /**
      * 查询菜品相关信息
-     *
      * @param id
      * @return
      */
@@ -99,5 +98,13 @@ public class DishController {
         dishService.updateStatus(status,id);
         return Result.success();
     }
+    @GetMapping("/list")
+    @ApiOperation("查询菜品")
+    public Result<List<Dish>> getBycategoryId(Long categoryId) {
+        log.info("开始查询菜品信息:{}", categoryId);
+        List<Dish> dish = dishService.getBycategoryId(categoryId);
+        return Result.success(dish);
+    }
+
 
 }

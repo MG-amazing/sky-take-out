@@ -5,9 +5,10 @@
 
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into dish(name, category_id, price, image, description, create_time, update_time, create_user, update_user,status)
-        VALUES
-        (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser}, #{status})
+        insert into dish(name, category_id, price, image, description, create_time, update_time, create_user,
+                         update_user, status)
+        VALUES (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{createTime}, #{updateTime}, #{createUser},
+                #{updateUser}, #{status})
     </insert>
 
     <select id="pageQuery" resultType="com.sky.vo.DishVO">
@@ -25,6 +26,7 @@
         </where>
         order by d.create_time desc
     </select>
+
     <update id="update">
         update dish
         <set>
@@ -53,7 +55,23 @@
                 update_user=#{updateUser},
             </if>
         </set>
-            where id=#{id}
+        where id=#{id}
 
     </update>
+    <select id="getByCategoryId" resultType="com.sky.entity.Dish" parameterType="Dish">
+        SELECT *
+        FROM dish
+        <where>
+            <if test="categoryId != null">
+                AND category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="name != null">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
 </mapper>

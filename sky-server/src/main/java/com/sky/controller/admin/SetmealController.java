@@ -68,5 +68,12 @@ public class SetmealController {
 
 
 
+    @PostMapping("/status/{status}")
+    public Result updateStatus(@PathVariable Integer status ,Long id){
+        setmealService.updateStatus(status,id);
+        return Result.success();
+    }
+
+
 
 }

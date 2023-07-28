@@ -1,6 +1,6 @@
 package com.sky.controller.admin;
 
-import com.sky.constant.MessageConstant;
+
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
@@ -12,9 +12,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 菜品管理
@@ -27,6 +29,8 @@ import java.util.List;
 public class DishController {
     @Autowired
     private DishService dishService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 新增菜品
@@ -39,6 +43,10 @@ public class DishController {
     public Result save(@RequestBody DishDTO dishDTO) {
         log.info("新增菜品:{}", dishDTO);
         dishService.saveWithFlavor(dishDTO);
+
+        //清理缓存数据
+        String key="dish_"+dishDTO.getCategoryId();
+        CleanCash(key);
         return Result.success();
     }
 
@@ -68,6 +76,8 @@ public class DishController {
     public Result delete(@RequestParam List<Long> ids) {
         log.info("菜品批量删除{}", ids);
         dishService.deleteBatch(ids);
+
+        CleanCash("dish_*");
         return Result.success();
     }
 
@@ -88,6 +98,9 @@ public class DishController {
     @ApiOperation("修改菜品")
     public Result update(@RequestBody DishDTO dishDTO){
         dishService.updateWithFlavor(dishDTO);
+        CleanCash("dish_*");
+
+
         return Result.success();
 
     }
@@ -96,6 +109,8 @@ public class DishController {
     public Result updateStatus(@PathVariable Integer status ,Long id){
         log.info("更新状态为:{},id:{}",status,id);
         dishService.updateStatus(status,id);
+        CleanCash("dish_*");
+
         return Result.success();
     }
     @GetMapping("/list")
@@ -104,6 +119,11 @@ public class DishController {
         log.info("开始查询菜品信息:{}", categoryId);
         List<Dish> dish = dishService.getBycategoryId(categoryId);
         return Result.success(dish);
+    }
+
+    private void CleanCash(String patten){
+        Set keys = redisTemplate.keys(patten);
+        redisTemplate.delete(keys);
     }
 
 

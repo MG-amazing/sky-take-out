@@ -65,4 +65,6 @@ public interface DishMapper {
 
 
     List<Dish> getByCategoryId(Dish dish);
+
+
 }

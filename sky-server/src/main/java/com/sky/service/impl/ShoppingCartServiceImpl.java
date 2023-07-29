@@ -26,43 +26,44 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private DishMapper dishMapper;
     @Autowired
     private SetmealMapper setmealMapper;
+
     /**
      * 添加购物车
+     *
      * @param shoppingCartDTO
      */
     public void addShoppingCart(ShoppingCartDTO shoppingCartDTO) {
         //添加到购物车的数据是否在购物车内，不存在的话插入数据
         ShoppingCart shoppingCart = new ShoppingCart();
-        BeanUtils.copyProperties(shoppingCartDTO,shoppingCart);
+        BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
         Long currentId = BaseContext.getCurrentId();
         shoppingCart.setUserId(currentId);
 
 
         List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
         //如果存在则需要数量加一
-        if (list!=null&&list.size()>0){
+        if (list != null && list.size() > 0) {
             ShoppingCart cart = list.get(0);
-            cart.setNumber(cart.getNumber()+1);
+            cart.setNumber(cart.getNumber() + 1);
             shoppingCartMapper.update(cart);
-        }else {
+        } else {
             //如果不存在，需要插入一条购物车数据
 
             //判断是菜品还是套餐
             Long dishId = shoppingCartDTO.getDishId();
 
-            if (dishId!=null){
+            if (dishId != null) {
                 //本次添加到购物车的是菜品
                 Dish dish = dishMapper.getById(dishId);
                 shoppingCart.setName(dish.getName());
                 shoppingCart.setImage(dish.getImage());
                 shoppingCart.setAmount(dish.getPrice());
 
-                
 
-            }else {
+            } else {
                 //是套餐
                 Long setmealId = shoppingCartDTO.getSetmealId();
-                Setmeal setmeal=setmealMapper.getById(setmealId);
+                Setmeal setmeal = setmealMapper.getById(setmealId);
                 shoppingCart.setName(setmeal.getName());
                 shoppingCart.setImage(setmeal.getImage());
                 shoppingCart.setAmount(setmeal.getPrice());
@@ -74,5 +75,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             setmealMapper.insert(shoppingCart);
         }
 
+    }
+
+    /**
+     * 查看购物车
+     *
+     * @return
+     */
+    public List<ShoppingCart> showShoppingCart() {
+        Long currentId = BaseContext.getCurrentId();
+        ShoppingCart shoppingCart = ShoppingCart.builder()
+                .userId(currentId)
+                .build();
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+
+        return list;
     }
 }

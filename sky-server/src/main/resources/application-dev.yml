@@ -26,3 +26,7 @@ sky:
     weChatPayCertFilePath: ${}
     notifyUrl: ${}
     refundNotifyUrl: ${}
+  shop:
+    addres: 当前地址
+  baidu:
+    ak: 12456

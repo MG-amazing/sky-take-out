@@ -11,10 +11,10 @@
     <select id="countByMap" resultType="java.lang.Integer">
         select count(id)from user
         <where>
-            <if test="begin">
+            <if test="begin!=null">
                 and create_time &gt;#{begin}
             </if>
-            <if test="end">
+            <if test="end!=null">
                 and create_time &lt;#{end}
             </if>
 

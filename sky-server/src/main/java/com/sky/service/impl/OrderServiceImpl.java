@@ -273,7 +273,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         //订单状态 1待付款 2待接单 3已接单 4派送中 5已完成 6已取消
-        if (ordersDB.getStatus() > 2) {
+        if (ordersDB.getStatus() >3) {
             throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
         }
 
@@ -501,6 +501,24 @@ public class OrderServiceImpl implements OrderService {
         orders.setDeliveryTime(LocalDateTime.now());
 
         orderMapper.update(orders);
+    }
+
+    /**
+     * 用户催单
+     * @param id
+     */
+    public void reminder(Long id) {
+        Orders ordersDB=orderMapper.getById(id);
+        if (ordersDB==null){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        Map map=new HashMap();
+        map.put("type",2);//1表示来单提醒，2表示催单
+        map.put("orderId",id);
+        map.put("content","订单号："+ordersDB.getNumber());
+        String json = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(json);
     }
 //通过NGINX检查是否包含Header实现反爬虫
 //害怕用户耍流氓，通过POSTMAN调用此接口

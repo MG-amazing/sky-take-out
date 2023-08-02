@@ -77,6 +77,27 @@ public class OrderController {
         return Result.success(orderVO);
     }
 
+    /**
+     *
+     * @return
+     */
+    @GetMapping("/reminder/{id}")
+    @ApiOperation("客户催单")
+    private Result reminder(@PathVariable Long id){
+        orderService.reminder(id);
+        return Result.success();
+    }
+
+
+
+    @PutMapping("/cancel/{id}")
+    @ApiOperation("完成订单")
+    public Result cancel(@PathVariable("id") Long id) throws Exception {
+        orderService.userCancelById(id);
+        return Result.success();
+    }
+
+
 
 
 }

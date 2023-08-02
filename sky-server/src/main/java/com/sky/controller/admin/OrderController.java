@@ -73,17 +73,7 @@ public class OrderController {
         return Result.success();
     }
 
-    /**
-     * 取消订单
-     *
-     * @return
-     */
-    @PutMapping("/cancel")
-    @ApiOperation("取消订单")
-    public Result cancel(@RequestBody OrdersCancelDTO ordersCancelDTO) throws Exception {
-        orderService.cancel(ordersCancelDTO);
-        return Result.success();
-    }
+
 
     /**
      * 订单详情
@@ -121,6 +111,19 @@ public class OrderController {
     @ApiOperation("完成订单")
     public Result complete(@PathVariable("id") Long id) {
         orderService.complete(id);
+        return Result.success();
+    }
+
+
+    /**
+     * 取消订单
+     *
+     * @return
+     */
+    @PutMapping("/cancel")
+    @ApiOperation("取消订单")
+    public Result cancel(@RequestBody OrdersCancelDTO ordersCancelDTO) throws Exception {
+        orderService.cancel(ordersCancelDTO);
         return Result.success();
     }
 

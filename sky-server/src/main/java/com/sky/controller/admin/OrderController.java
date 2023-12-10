@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController("adminOrderController")
-@Api("订单接口")
+@Api(tags = "订单接口")
 @RequestMapping("/admin/order")
 public class OrderController {
     @Autowired

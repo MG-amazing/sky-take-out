@@ -51,6 +51,11 @@ sky:
     access-key-id: ${sky.alioss.access-key-id}
     access-key-secret: ${sky.alioss.access-key-secret}
     bucket-name: ${sky.alioss.bucket-name}
+minio:
+  url: http://localhost:9090  #对象存储服务的URL
+  accessKey: minioadmin2 #账户
+  secretKey: minioadmin #密码
+
   wechat:
     appid: ${sky.wechat.appid}
     secret: ${sky.wechat.secret}

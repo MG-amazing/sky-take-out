@@ -1,12 +1,12 @@
 package com.sky.utils;
 
-import io.minio.*;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectsArgs;
+import io.minio.Result;
 import io.minio.messages.DeleteError;
 import io.minio.messages.DeleteObject;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,12 +22,13 @@ import java.util.stream.Collectors;
  */
 @Component
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class MinioUtil {
-    @Autowired
-    private MinioClient minioClient;
 
+
+    private final MinioClient minioClient;
+    public MinioUtil(MinioClient minioClient) {
+        this.minioClient = minioClient;
+    }
     @Value("sky")
     private String bucketName;
     /**

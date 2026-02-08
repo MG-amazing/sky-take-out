@@ -76,6 +76,7 @@ public class DishController {
     public Result delete(@RequestParam List<Long> ids) {
         log.info("菜品批量删除{}", ids);
         dishService.deleteBatch(ids);
+        dishService.deleteBatch(ids);
 
 
         /**
@@ -94,6 +95,147 @@ public class DishController {
 
 
 
+
+
+        /**
+         * dsadas
+         * dsadadas
+         * dasdadsa
+         */
+
+        CleanCash("dish_*");     dishService.deleteBatch(ids);
+
+
+        /**
+         * 11111111
+         * 1
+         * 11
+         * 1
+         * 1
+         * 1
+         *
+         * 1
+         * 1
+         * 1
+         */
+
+
+
+
+
+
+        /**
+         * dsadas
+         * dsadadas
+         * dasdadsa
+         */
+
+        CleanCash("dish_*");     dishService.deleteBatch(ids);
+
+
+        /**
+         * 11111111
+         * 1
+         * 11
+         * 1
+         * 1
+         * 1
+         *
+         * 1
+         * 1
+         * 1
+         */
+
+
+
+
+
+
+        /**
+         * dsadas
+         * dsadadas
+         * dasdadsa
+         */
+
+        CleanCash("dish_*");     dishService.deleteBatch(ids);
+
+
+        /**
+         * 11111111
+         * 1
+         * 11
+         * 1
+         * 1
+         * 1
+         *
+         * 1
+         * 1
+         * 1
+         */
+
+
+
+
+
+
+        /**
+         * dsadas
+         * dsadadas
+         * dasdadsa
+         */
+
+        CleanCash("dish_*");     dishService.deleteBatch(ids);
+
+
+        /**
+         * 11111111
+         * 1
+         * 11
+         * 1
+         * 1
+         * 1
+         *
+         * 1
+         * 1
+         * 1
+         */
+
+
+
+
+
+
+        /**
+         * dsadas
+         * dsadadas
+         * dasdadsa
+         */
+
+        CleanCash("dish_*");
+
+        /**
+         * 11111111
+         * 1
+         * 11
+         * 1
+         * 1
+         * 1
+         *
+         * 1
+         * 1
+         * 1
+         */
+
+
+
+
+
+
+        /**
+         * dsadas
+         * dsadadas
+         * dasdadsa
+         */
 
         CleanCash("dish_*");
         return Result.success();

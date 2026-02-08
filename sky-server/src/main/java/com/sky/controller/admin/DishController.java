@@ -127,7 +127,7 @@ public class DishController {
         /**
          * dsadas
          * dsadadas
-         * dasdadsadad
+         * dasdadsa
          */
 
         CleanCash("dish_*");     dishService.deleteBatch(ids);

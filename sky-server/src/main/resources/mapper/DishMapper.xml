@@ -86,8 +86,14 @@
             </if>
         </where>
     </select>
-
-
+    <select id="selectByid" resultType="com.sky.dto.TingshouDTO">
+        select o.id as id,name as name,od.number as number,status ,o.order_time as order_time
+        from order_detail od
+                 left join orders o
+                           on order_id = o.id
+        where 1 = 1
+          and od.dish_id=#{id}
+    </select>
 
 
 </mapper>

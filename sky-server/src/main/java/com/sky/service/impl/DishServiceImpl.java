@@ -7,6 +7,7 @@ import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.dto.TingshouDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
 import com.sky.exception.DeletionNotAllowedException;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 @Service
@@ -86,15 +88,15 @@ public class DishServiceImpl implements DishService {
     public void deleteBatch(List<Long> ids) {
         //1.判断菜品是否起售中
         for (Long id : ids) {
-            Dish dish=dishMapper.getById(id);
-            if (dish.getStatus()== StatusConstant.ENABLE){
+            Dish dish = dishMapper.getById(id);
+            if (dish.getStatus() == StatusConstant.ENABLE) {
                 //起售中不能删除
                 throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
             }
         }
         //2.判断菜品是否和套餐关联
         List<Long> setmealIds = setmealDishMapper.getSetmealIdsByDishIds(ids);
-        if (setmealIds!=null&&setmealIds.size()>0){
+        if (setmealIds != null && setmealIds.size() > 0) {
             //菜品被套餐关联不允许删除
             throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
         }
@@ -114,11 +116,11 @@ public class DishServiceImpl implements DishService {
      */
     public DishVO getById(Long id) {
         //查询菜品数据
-        Dish dish=dishMapper.getById(id);
+        Dish dish = dishMapper.getById(id);
         //根据菜品id查询口味数据
-        List<DishFlavor>dishFlavors=dishFlavorMapper.getByDishId(id);
-        DishVO dishVO=new DishVO();
-        BeanUtils.copyProperties(dish,dishVO);
+        List<DishFlavor> dishFlavors = dishFlavorMapper.getByDishId(id);
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish, dishVO);
         dishVO.setFlavors(dishFlavors);
 
 
@@ -127,12 +129,13 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 更新菜品
+     *
      * @param dishDTO
      */
     @Transactional
     public void updateWithFlavor(DishDTO dishDTO) {
         Dish dish = new Dish();
-        BeanUtils.copyProperties(dishDTO,dish);
+        BeanUtils.copyProperties(dishDTO, dish);
         dishMapper.update(dish);
         //删除口味数据
         dishFlavorMapper.deleteByDishId(dishDTO.getId());
@@ -151,11 +154,12 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 根据id修改售卖状态
+     *
      * @param status
      * @param id
      */
     public void updateStatus(Integer status, Long id) {
-        Dish dish=new Dish();
+        Dish dish = new Dish();
         dish.setStatus(status);
         dish.setId(id);
         dishMapper.update(dish);
@@ -178,6 +182,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 条件查询菜品和口味
+     *
      * @param dish
      * @return
      */
@@ -188,7 +193,7 @@ public class DishServiceImpl implements DishService {
 
         for (Dish d : dishList) {
             DishVO dishVO = new DishVO();
-            BeanUtils.copyProperties(d,dishVO);
+            BeanUtils.copyProperties(d, dishVO);
 
             //根据菜品id查询对应的口味
             List<DishFlavor> flavors = dishFlavorMapper.getByDishId(d.getId());
@@ -198,6 +203,20 @@ public class DishServiceImpl implements DishService {
         }
 
         return dishVOList;
+    }
+
+    @Override
+    public boolean selectByid(Long id) {
+        List<TingshouDTO> ts = dishMapper.selectByid(id);
+        AtomicBoolean flag = new AtomicBoolean(false);
+        for (TingshouDTO d : ts) {
+            if (d.getStatus() == 1||d.getStatus()==2||d.getStatus()==3) {
+                flag.set(true);
+                break;
+            }
+        }
+
+        return flag.get();
     }
 
 

@@ -3,6 +3,7 @@ package com.sky.mapper;
 import com.github.pagehelper.Page;
 import com.sky.annotation.AutoFill;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.dto.TingshouDTO;
 import com.sky.entity.Dish;
 import com.sky.enumeration.OperationType;
 import com.sky.vo.DishVO;
@@ -17,6 +18,7 @@ import java.util.Map;
 public interface DishMapper {
 
 
+ 
 
     /**
      * 根据分类id查询菜品数量
@@ -75,4 +77,5 @@ public interface DishMapper {
     Integer countByMap(Map map);
 
 
+    List<TingshouDTO> selectByid(Long id);
 }

@@ -97,8 +97,14 @@ public class DishController {
     @PutMapping
     @ApiOperation("修改菜品")
     public Result update(@RequestBody DishDTO dishDTO){
+        //如果有未完成的订单则不能修改菜品信息
+        boolean ts = dishService.selectByid(dishDTO.getId());
+        if(dishDTO.getStatus()==1&&ts){
+            return Result.error("订单未完成，修改失败");
+        }
         dishService.updateWithFlavor(dishDTO);
         CleanCash("dish_*");
+
 
 
         return Result.success();
@@ -108,6 +114,14 @@ public class DishController {
     @ApiOperation("菜品售卖状态修改")
     public Result updateStatus(@PathVariable Integer status ,Long id){
         log.info("更新状态为:{},id:{}",status,id);
+        //新增需求 当订单中包含未完成菜品时无法操作该菜品状态
+        //通过左连接查询订单详情和订单表中订单状态（123为未出餐，4567为已出餐）
+        boolean ts = dishService.selectByid(id);
+        //ts=false（123)为未出餐则不能修改状态，但status为0（停售）时可以修改为起售
+        if(status==0 && ts){
+            return Result.error("订单未完成，修改失败");
+        }
+        //ts=true（4567)为已出餐，执行修改状态
         dishService.updateStatus(status,id);
         CleanCash("dish_*");
 

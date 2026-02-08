@@ -10,6 +10,16 @@
         VALUES (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{createTime}, #{updateTime}, #{createUser},
                 #{updateUser}, #{status})
     </insert>
+    <insert id="instert1">
+        insert into category (id,type,name,sort,status,create_time,update_time,create_user,update_user)
+        values (#{id},#{type},#{name},#{sort},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser})
+    </insert>
+    <insert id="insert1" useGeneratedKeys="true" keyProperty="id">
+        insert into dish(name, category_id, price, image, description, create_time, update_time, create_user,
+                         update_user, status)
+        VALUES (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{createTime}, #{updateTime}, #{createUser},
+                #{updateUser}, #{status})
+    </insert>
 
     <select id="pageQuery" resultType="com.sky.vo.DishVO">
         select d.*,c.name as categoryName from dish d left outer join category c on d.category_id = c.id
@@ -93,6 +103,12 @@
                            on order_id = o.id
         where 1 = 1
           and od.dish_id=#{id}
+    </select>
+    <select id="selecta" resultType="com.sky.entity.Category">
+        select * from category
+        where 1=1
+            and type = #{type}
+            and status = 1
     </select>
 
 

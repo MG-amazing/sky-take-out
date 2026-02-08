@@ -1,6 +1,7 @@
 package com.sky.service.impl;
 
 
+import cn.hutool.core.collection.CollUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
@@ -218,6 +219,25 @@ public class DishServiceImpl implements DishService {
 
         return flag.get();
     }
+
+    @Override
+    public void xinzeng(DishDTO dishDTO) {
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO, dish);
+        dishMapper.insert1(dish);
+        if (CollUtil.isNotEmpty(dishDTO.getFlavors())) {
+            List<DishFlavor> flavors = dishDTO.getFlavors();
+            for (int i = 0; i < flavors.size(); i++) {
+                flavors.get(i).setDishId(dish.getId());
+            }
+            dishFlavorMapper.insertBatch(dishDTO.getFlavors());
+
+        }
+
+
+
+    }
+
 
 
 }

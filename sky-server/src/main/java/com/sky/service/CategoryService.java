@@ -46,4 +46,8 @@ public interface CategoryService {
      * @return
      */
     List<Category> list(Integer type);
+
+    void instert(CategoryDTO categoryDTO);
+
+    List<Category> select1(Integer type);
 }

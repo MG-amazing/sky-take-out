@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -31,12 +32,15 @@ public class CategoryController {
      * @return
      */
     @PostMapping
-    @ApiOperation("新增分类")
-    public Result<String> save(@RequestBody CategoryDTO categoryDTO){
+    @ApiOperation("新增菜品分类")
+    public Result<?> xinzeng(@RequestBody CategoryDTO categoryDTO) {
         log.info("新增分类：{}", categoryDTO);
-        categoryService.save(categoryDTO);
+        //用CategoryDTO接参后调用service层方法，给status赋默认值0，再调用mapper层插入数据库
+        categoryService.instert(categoryDTO);
+        //返回成功结果
         return Result.success();
     }
+
 
     /**
      * 分类分页查询
@@ -94,10 +98,13 @@ public class CategoryController {
      * @param type
      * @return
      */
-    @GetMapping("/list")
+    @GetMapping({"/list"})
     @ApiOperation("根据类型查询分类")
-    public Result<List<Category>> list(Integer type){
-        List<Category> list = categoryService.list(type);
-        return Result.success(list);
+    public Result<?> fenlei(Integer type){
+        log.info("根据类型查询分类：{}", type);
+        //用接到的type查询分类列表（1.菜品分类2.报餐分类）
+        List<Category> categoryList = categoryService.select1(type);
+        //判断分类列表中数据的status是否为0（禁用状态），如果是则过滤掉,只返回status为1（启用状态）的分类
+        return Result.success(categoryList);
     }
 }

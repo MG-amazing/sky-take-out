@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
@@ -38,15 +39,14 @@ public class DishController {
      * @param dishDTO
      * @return
      */
-    @PostMapping()
+    @PostMapping
     @ApiOperation("新增菜品")
-    public Result save(@RequestBody DishDTO dishDTO) {
-        log.info("新增菜品:{}", dishDTO);
-        dishService.saveWithFlavor(dishDTO);
-
-        //清理缓存数据
-        String key="dish_"+dishDTO.getCategoryId();
-        CleanCash(key);
+    public Result<?> addDish(@RequestBody @Valid DishDTO dishDTO) {
+        //校验数据是否合法,比如菜品名称不能为空，价格不能为负数
+        //调用service将菜品信息保存到数据库
+        //利用自增主键将菜品id回填到dishDTO对象中
+        //再次通过id将口味信息保存到关联口味表中
+        dishService.xinzeng(dishDTO);
         return Result.success();
     }
 

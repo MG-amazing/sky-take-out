@@ -65,4 +65,6 @@ public interface DishService {
 
 
     boolean selectByid(Long id);
+
+    void xinzeng(DishDTO dishDTO);
 }

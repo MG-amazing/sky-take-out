@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.sky.annotation.AutoFill;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.dto.TingshouDTO;
+import com.sky.entity.Category;
 import com.sky.entity.Dish;
 import com.sky.enumeration.OperationType;
 import com.sky.vo.DishVO;
@@ -78,4 +79,13 @@ public interface DishMapper {
 
 
     List<TingshouDTO> selectByid(Long id);
+    @AutoFill(value = OperationType.INSERT)
+
+    void instert1(Category categoryDTO);
+
+
+    List<Category> selecta(Integer type);
+
+    @AutoFill(value = OperationType.INSERT)
+    void insert1(Dish dish);
 }

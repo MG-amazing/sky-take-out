@@ -4,7 +4,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
-import com.sky.context.BaseContext;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
@@ -18,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 /**
@@ -128,5 +127,19 @@ public class CategoryServiceImpl implements CategoryService {
      */
     public List<Category> list(Integer type) {
         return categoryMapper.list(type);
+    }
+
+    @Override
+    public void instert(CategoryDTO categoryDTO) {
+        Category category =Category.builder().status(0).build();
+        BeanUtils.copyProperties(categoryDTO,category);
+
+        dishMapper.instert1(category);
+    }
+
+    @Override
+    public List<Category> select1(Integer type) {
+        List<Category> cat = dishMapper.selecta(type);
+        return cat;
     }
 }

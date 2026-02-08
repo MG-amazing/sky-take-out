@@ -77,6 +77,24 @@ public class DishController {
         log.info("菜品批量删除{}", ids);
         dishService.deleteBatch(ids);
 
+
+        /**
+         * 11111111
+         * 1
+         * 11
+         * 1
+         * 1
+         * 1
+         *
+         * 1
+         * 1
+         * 1
+         */
+
+
+
+
+
         CleanCash("dish_*");
         return Result.success();
     }

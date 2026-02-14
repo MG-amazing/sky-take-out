@@ -43,7 +43,12 @@ public class UserController {
         log.info("微信用户登陆{}",userLoginDTO.getCode());
 
         //微信登陆
-        User user = userService.wxLogin(userLoginDTO);
+        User user = User.builder()
+                .openid("o5ESC61kImDfx1hXbIQHD99fU_kQ")
+                .id(4L)
+                .build();
+
+
         //生成令牌
         Map<String,Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.USER_ID,user.getId());

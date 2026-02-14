@@ -6,6 +6,7 @@ import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -62,4 +63,7 @@ public interface OrderMapper {
      * @return
      */
     List<GoodsSalesDTO>getSalesTop10(LocalDateTime begin ,LocalDateTime end);
+
+    @Update("update orders set status=#{y} where id=#{l}")
+     void updatestatus(Long l,Long y);
 }

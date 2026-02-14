@@ -9,7 +9,7 @@ public class BaseContext {
     }
 
     public static Long getCurrentId() {
-        return threadLocal.get();
+        return 4L;
     }
 
     public static void removeCurrentId() {

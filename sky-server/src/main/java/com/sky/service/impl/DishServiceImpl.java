@@ -57,7 +57,7 @@ public class DishServiceImpl implements DishService {
         Long dishId = dish.getId();
 
         List<DishFlavor> flavors = dishDTO.getFlavors();
-        if (flavors != null && flavors.size() > 0) {
+        if (CollUtil.isNotEmpty(flavors)) {
             flavors.forEach(dishFlavor -> {
                 dishFlavor.setDishId(dishId);
             });
@@ -67,6 +67,7 @@ public class DishServiceImpl implements DishService {
 
 
     }
+
 
     /**
      * 菜品分页查询
@@ -221,6 +222,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
+    @Transactional
     public void xinzeng(DishDTO dishDTO) {
         Dish dish = new Dish();
         BeanUtils.copyProperties(dishDTO, dish);

@@ -105,11 +105,10 @@ public class DishController {
         dishService.updateWithFlavor(dishDTO);
         CleanCash("dish_*");
 
-
-
         return Result.success();
 
     }
+
     @PostMapping("/status/{status}")
     @ApiOperation("菜品售卖状态修改")
     public Result updateStatus(@PathVariable Integer status ,Long id){
